@@ -1,30 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 
-public class StoryOption : MonoBehaviour {
+[System.Serializable]
+public class StoryOption {
 
+	public string action = "EMPTY_ACTION";
 	public string dialogue = "EMPTY_DIALOGUE";
-	public StoryOption[] options;
 
-	void Start () {
-		
-	}
-	
-	void Update () {
-		
-	}
+	public Sprite sprite;
 
-	public void LeftOption() {
-		ChooseOption(0);
-	}
+	public AudioClip audioCue;
 
-	public void RightOption() {
-		ChooseOption(1);
-	}
+	public AudioClip bgmAudio;
 
-	//Doing it this way for the ability to expand to more than 2 options in the future
-	public void ChooseOption(int index) {
-		StoryManager.instance.AdvanceStory(options[index]);
-	}
+	//Variable questions based on past user input
+
+	public StoryOption leftOption { get { return StoryManager.instance.storyDatabase.storyOptions[options[0]]; } }
+	public StoryOption rightOption { get { return StoryManager.instance.storyDatabase.storyOptions[options[1]]; } }
+
+	public int[] options;
 }

@@ -7,9 +7,15 @@ public class StoryManager : MonoBehaviour {
 
 	public static StoryManager instance;
 
-	StoryOption currentStoryOption;
+	public StoryOption currentStoryOption { get { return StoryManager.instance.storyDatabase.storyOptions[currentStoryOptionIndex]; } }
+	[System.NonSerialized]
+	public int currentStoryOptionIndex;
 
-	UnityEvent storyAdvancedEvent;
+//	[SerializeField]
+	public StoryDatabase storyDatabase;
+
+	[System.NonSerialized]
+	public UnityEvent storyAdvancedEvent = new UnityEvent();
 
 	void Awake() {
 		if(instance != null) {
@@ -21,16 +27,28 @@ public class StoryManager : MonoBehaviour {
 	}
 
 	void Start () {
-		
+		AdvanceStory(0);
 	}
 	
 	void Update () {
 		
 	}
 
-	public void AdvanceStory(StoryOption storyOption) {
-		currentStoryOption = storyOption;
+	public void LeftOption() {
+		ChooseOption(0);
+	}
 
+	public void RightOption() {
+		ChooseOption(1);
+	}
+
+	//Doing it this way for the ability to expand to more than 2 options in the future
+	public void ChooseOption(int index) {
+		StoryManager.instance.AdvanceStory(currentStoryOption.options[index]);
+	}
+
+	public void AdvanceStory(int storyOptionIndex) {
+		currentStoryOptionIndex = storyOptionIndex;
 
 		storyAdvancedEvent.Invoke();
 	}

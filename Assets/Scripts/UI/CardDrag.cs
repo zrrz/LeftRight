@@ -47,13 +47,17 @@ public class CardDrag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 	}
 
 	IEnumerator FadeOut() {
-		Color startColor = GetComponent<Image>().color;
-		Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
 		float fadeTime = 0.2f;
 		for(float t = 0f; t < 1f; t += Time.deltaTime/fadeTime) {
-			GetComponent<Image>().color = Color.Lerp(startColor, endColor, t);
-			yield return null;
+			foreach(Image image in GetComponentsInChildren<Image>()) {
+				Color startColor = image.color;
+				Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
+
+				GetComponent<Image>().color = Color.Lerp(startColor, endColor, t);
+				
+				image.color = endColor;
+				yield return null;
+			}
 		}
-		GetComponent<Image>().color = endColor;
 	}
 }
